@@ -8,31 +8,34 @@ const {
   GraphQLList,
 } = graphql;
 const _ = require('lodash');
+const User = require('../model/user');
+const Hobby = require('../model/hobby');
+const Post = require('../model/post');
 
 // Dummy data
-var usersData = [
-  { id: '1', name: 'Bond', age: 36, profession: 'Programmer' },
-  { id: '13', name: 'Anna', age: 26, profession: 'Mechanic' },
-  { id: '211', name: 'Bella', age: 16, profession: 'Programmer' },
-  { id: '19', name: 'Gina', age: 26, profession: 'Programmer' },
-  { id: '150', name: 'Georgina', age: 36, profession: 'Teacher' },
-];
+// var usersData = [
+//   { id: '1', name: 'Bond', age: 36, profession: 'Programmer' },
+//   { id: '13', name: 'Anna', age: 26, profession: 'Mechanic' },
+//   { id: '211', name: 'Bella', age: 16, profession: 'Programmer' },
+//   { id: '19', name: 'Gina', age: 26, profession: 'Programmer' },
+//   { id: '150', name: 'Georgina', age: 36, profession: 'Teacher' },
+// ];
 
-var hobbiesData = [
-  { id: '1', title: 'Programming', description: '...', userId: '1' },
-  { id: '2', title: 'Rowing', description: '...', userId: '1' },
-  { id: '3', title: 'Swimming', description: '...', userId: '13' },
-  { id: '4', title: 'Fencing', description: '...', userId: '211' },
-  { id: '5', title: 'Hiking', description: '...', userId: '1' },
-];
+// var hobbiesData = [
+//   { id: '1', title: 'Programming', description: '...', userId: '1' },
+//   { id: '2', title: 'Rowing', description: '...', userId: '1' },
+//   { id: '3', title: 'Swimming', description: '...', userId: '13' },
+//   { id: '4', title: 'Fencing', description: '...', userId: '211' },
+//   { id: '5', title: 'Hiking', description: '...', userId: '1' },
+// ];
 
-var postsData = [
-  { id: '1', comment: 'Building a Mind', userId: '1' },
-  { id: '2', comment: 'GraphQL is Amazing', userId: '1' },
-  { id: '3', comment: 'How to Change the World', userId: '19' },
-  { id: '4', comment: 'Fencing', userId: '211' },
-  { id: '5', comment: 'Hiking', userId: '1' },
-];
+// var postsData = [
+//   { id: '1', comment: 'Building a Mind', userId: '1' },
+//   { id: '2', comment: 'GraphQL is Amazing', userId: '1' },
+//   { id: '3', comment: 'How to Change the World', userId: '19' },
+//   { id: '4', comment: 'Fencing', userId: '211' },
+//   { id: '5', comment: 'Hiking', userId: '1' },
+// ];
 
 // Create types
 const UserType = new GraphQLObjectType({
@@ -167,44 +170,42 @@ const Mutation = new GraphQLObjectType({
         profession: { type: GraphQLString },
       },
       resolve(parent, args) {
-        let user = {
+        let user = User({
           name: args.name,
           age: args.age,
           profession: args.profession,
-        };
-        return user;
+        });
+        return user.save();
       },
     },
     createPost: {
       type: PostType,
       args: {
-        // id: { type: GraphQLID },
         comment: { type: GraphQLString },
         userId: { type: GraphQLID },
       },
       resolve(parent, args) {
-        let post = {
+        let post = Post({
           comment: args.comment,
           userId: args.userId,
-        };
-        return post;
+        });
+        return post.save();
       },
     },
     createHobby: {
       type: HobbyType,
       args: {
-        // id: { type: GraphQLID },
         title: { type: GraphQLString },
         description: { type: GraphQLString },
         userId: { type: GraphQLID },
       },
       resolve(parent, args) {
-        let hobby = {
+        let hobby = Hobby({
           title: args.title,
           description: args.description,
           userId: args.userId,
-        };
-        return hobby;
+        });
+        return hobby.save();
       },
     },
   },
