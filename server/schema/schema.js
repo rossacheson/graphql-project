@@ -57,13 +57,15 @@ const UserType = new GraphQLObjectType({
     posts: {
       type: new GraphQLList(PostType),
       resolve(parent, args) {
-        return _.filter(postsData, { userId: parent.id });
+        return Post.find({ userId: parent.id });
+        // return _.filter(postsData, { userId: parent.id });
       },
     },
     hobbies: {
       type: new GraphQLList(HobbyType),
       resolve(parent, args) {
-        return _.filter(hobbiesData, { userId: parent.id });
+        return Hobby.find({ userId: parent.id });
+        // return _.filter(hobbiesData, { userId: parent.id });
       },
     },
   }),
@@ -85,7 +87,8 @@ const HobbyType = new GraphQLObjectType({
     user: {
       type: UserType,
       resolve(parent, args) {
-        return _.find(usersData, { id: parent.userId });
+        return User.findById(parent.userId);
+        // return _.find(usersData, { id: parent.userId });
       },
     },
   }),
@@ -104,7 +107,8 @@ const PostType = new GraphQLObjectType({
     user: {
       type: UserType,
       resolve(parent, args) {
-        return _.find(usersData, { id: parent.userId });
+        return User.findById(parent.userId);
+        // return _.find(usersData, { id: parent.userId });
       },
     },
   }),
@@ -119,39 +123,45 @@ const RootQuery = new GraphQLObjectType({
       type: UserType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
-        return _.find(usersData, { id: args.id });
+        return User.findById(args.id);
+        // return _.find(usersData, { id: args.id });
       },
     },
     users: {
       type: new GraphQLList(UserType),
       resolve(parent, args) {
-        return usersData;
+        return User.find();
+        // return usersData;
       },
     },
     hobby: {
       type: HobbyType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
-        return _.find(hobbiesData, { id: args.id });
+        return Hobby.findById(args.id);
+        // return _.find(hobbiesData, { id: args.id });
       },
     },
     hobbies: {
       type: new GraphQLList(HobbyType),
       resolve(parent, args) {
-        return hobbiesData;
+        return Hobby.find();
+        // return hobbiesData;
       },
     },
     post: {
       type: PostType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
-        return _.find(postsData, { id: args.id });
+        return Post.findById(args.id);
+        // return _.find(postsData, { id: args.id });
       },
     },
     posts: {
       type: new GraphQLList(PostType),
       resolve(parent, args) {
-        return postsData;
+        return Post.find();
+        // return postsData;
       },
     },
   }),
