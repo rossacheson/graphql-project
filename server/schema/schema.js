@@ -188,6 +188,28 @@ const Mutation = new GraphQLObjectType({
         return user.save();
       },
     },
+    updateUser: {
+      type: UserType,
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLString) },
+        name: { type: new GraphQLNonNull(GraphQLString) },
+        age: { type: GraphQLInt },
+        profession: { type: GraphQLString },
+      },
+      resolve(parent, args) {
+        return User.findByIdAndUpdate(
+          args.id,
+          {
+            $set: {
+              name: args.name,
+              age: args.age,
+              profession: args.profession,
+            },
+          },
+          { new: true }
+        );
+      },
+    },
     createPost: {
       type: PostType,
       args: {
@@ -200,6 +222,24 @@ const Mutation = new GraphQLObjectType({
           userId: args.userId,
         });
         return post.save();
+      },
+    },
+    updatePost: {
+      type: PostType,
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLString) },
+        comment: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve(parent, args) {
+        return Post.findByIdAndUpdate(
+          args.id,
+          {
+            $set: {
+              comment: args.comment,
+            },
+          },
+          { new: true }
+        );
       },
     },
     createHobby: {
@@ -216,6 +256,26 @@ const Mutation = new GraphQLObjectType({
           userId: args.userId,
         });
         return hobby.save();
+      },
+    },
+    updateHobby: {
+      type: HobbyType,
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLString) },
+        title: { type: new GraphQLNonNull(GraphQLString) },
+        description: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve(parent, args) {
+        return Hobby.findByIdAndUpdate(
+          args.id,
+          {
+            $set: {
+              title: args.title,
+              description: args.description,
+            },
+          },
+          { new: true }
+        );
       },
     },
   },
